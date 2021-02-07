@@ -1,5 +1,7 @@
 
 from flask import Flask
+import os
+import signal
 
 from Module.db_connector import connect
 from Module.db_connector import disconnect
@@ -18,6 +20,15 @@ def get_user_name(user_id):
             return "<h1 id='user'>" + row[0] + "</h1>"
     else:
         return "<h1 id='error'>" + 'no such user: ' + user_id + "</h1>"
+
+
+app.run(host='127.0.0.1', debug=True, port=5001)
+
+@app.route('/stop_server')
+def stop_server():
+    os.kill(os.getpid(), signal.CTRL_C_EVENT)
+    return 'Server stopped'
+
 
 
 app.run(host='127.0.0.1', debug=True, port=5001)
